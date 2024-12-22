@@ -28,6 +28,8 @@ class PhotoGalleryFragment : Fragment() {
     private lateinit var photoGalleryViewModel : PhotoGalleryViewModel
     private lateinit var photoRecyclerView : RecyclerView
     private lateinit var thumbnailDownloader : ThumbnailDownloader<PhotoHolder>
+
+
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
@@ -57,6 +59,8 @@ class PhotoGalleryFragment : Fragment() {
         photoRecyclerView.layoutManager = GridLayoutManager(context, 3)
         return view
     }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         photoGalleryViewModel.galleryItemLiveData.observe(
@@ -67,16 +71,22 @@ class PhotoGalleryFragment : Fragment() {
             })
     }
 
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         thumbnailDownloader.clearQueue()
         viewLifecycleOwner.lifecycle.removeObserver(thumbnailDownloader.viewLifecycleObserver)
     }
 
+
+
     override fun onDestroy() {
         super.onDestroy()
         lifecycle.removeObserver(thumbnailDownloader.fragmentLifecycleObserver)
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -98,11 +108,22 @@ class PhotoGalleryFragment : Fragment() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_item_clear -> {
+                photoGalleryViewModel.fetchPhotos("")
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 
     private class PhotoHolder(private val itemImageView: ImageView):
         RecyclerView.ViewHolder(itemImageView) {
         val bindDrawable: (Drawable) -> Unit = itemImageView::setImageDrawable
     }
+
 
     private inner class PhotoAdapter(private val galleryItems: List<GalleryItem>) : RecyclerView.Adapter<PhotoHolder>() {
         override fun onCreateViewHolder(
