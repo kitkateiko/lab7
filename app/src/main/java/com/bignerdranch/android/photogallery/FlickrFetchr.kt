@@ -8,7 +8,11 @@ import api.PhotoResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.annotation.WorkerThread
 import retrofit2.Retrofit
+import okhttp3.ResponseBody
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -48,4 +52,13 @@ class FlickrFetchr {
         })
         return responseLiveData
     }
+
+    @WorkerThread
+    fun fetchPhoto(url: String): Bitmap? {
+        val response: Response<ResponseBody> = flickrApi.fetchUrlBytes(url).execute()
+        val bitmap = response.body()?.byteStream()?.use(BitmapFactory::decodeStream)
+        Log.i(TAG, "Decoded bitmap=$bitmap from Response=$response")
+        return bitmap
+    }
+
 }
