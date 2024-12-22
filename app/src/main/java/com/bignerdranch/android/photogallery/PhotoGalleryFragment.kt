@@ -2,6 +2,8 @@ package com.bignerdranch.android.photogallery
 
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.BitmapDrawable
+import android.os.Handler
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,7 +28,14 @@ class PhotoGalleryFragment : Fragment() {
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        thumbnailDownloader = ThumbnailDownloader()
+        val responseHandler = Handler()
+
+        thumbnailDownloader =
+            ThumbnailDownloader(responseHandler) { photoHolder, bitmap ->
+                val drawable = BitmapDrawable(resources, bitmap)
+                photoHolder.bindDrawable(drawable)
+            }
+
         lifecycle.addObserver(thumbnailDownloader)
         photoGalleryViewModel = ViewModelProviders.of(this).get(PhotoGalleryViewModel::class.java)
     }
