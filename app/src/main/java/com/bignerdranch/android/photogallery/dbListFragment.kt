@@ -121,7 +121,7 @@ class dbListFragment : Fragment() {
             }
             val placeholder: Drawable = ContextCompat.getDrawable(
                 requireContext(),
-                R.drawable.bill_up_close
+                R.drawable.sueta
             ) ?: ColorDrawable()
 
             holder.bindDrawable(placeholder)

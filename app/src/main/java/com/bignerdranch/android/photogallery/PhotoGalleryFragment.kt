@@ -221,7 +221,7 @@ class PhotoGalleryFragment : Fragment() {
             val galleryItem = galleryItems[position]
             val placeholder: Drawable = ContextCompat.getDrawable(
                     requireContext(),
-                    R.drawable.bill_up_close
+                    R.drawable.sueta
                 ) ?: ColorDrawable()
             holder.bindDrawable(placeholder)
             holder.galleryItem = galleryItem
